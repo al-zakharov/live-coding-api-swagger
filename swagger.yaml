@@ -1,0 +1,42 @@
+swagger: "2.0"
+info:
+  description: "Пример API для демонстрации Swagger спецификации"
+  version: "1.0.0"
+  title: "Пример API"
+
+host: "example.com"
+basePath: "/v1"
+schemes:
+  - "https"
+  - "http"
+
+paths:
+  /items:
+    get:
+      summary: "Получить список всех элементов"
+      description: "Возвращает список всех элементов"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Успешный ответ"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Item"
+        400:
+          description: "Неверный запрос"
+
+definitions:
+  Item:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "item1"
