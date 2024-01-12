@@ -1,42 +1,136 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "Пример API для демонстрации Swagger спецификации"
-  version: "1.0.0"
-  title: "Пример API"
+  title: User management system API
+  description: API that handles user management
+  version: 1.0.0
 
-host: "example.com"
-basePath: "/v1"
+host: example.com
+basePath: /api
 schemes:
-  - "https"
-  - "http"
+  - http
 
 paths:
-  /items:
-    get:
-      summary: "Получить список всех элементов"
-      description: "Возвращает список всех элементов"
-      produces:
-        - "application/json"
+  /user/create:
+    post:
+      summary: Create a user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              Name:
+                type: string
+              Surname:
+                type: string
+              DateOfBirth:
+                type: string
+              Interests:
+                type: array
+                items:
+                  type: string
       responses:
         200:
-          description: "Успешный ответ"
+          description: User created
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Item"
+            $ref: '#/definitions/User'
         400:
-          description: "Неверный запрос"
+          description: Bad request
+
+  /user/id/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: User found
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: User not found
+
+  /user/name/{name}:
+    get:
+      summary: Get users by name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+
+  /user/update/{id}:
+    put:
+      summary: Update a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              Name:
+                type: string
+              Surname:
+                type: string
+              DateOfBirth:
+                type: string
+              Interests:
+                type: array
+                items:
+                  type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/User'
+
+  /user/delete/{id}:
+    delete:
+      summary: Delete a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        400:
+          description: User not found
+        200:
+          description: Success
 
 definitions:
-  Item:
-    type: "object"
-    required:
-      - "id"
-      - "name"
+  User:
+    type: object
     properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-        example: "item1"
+      Id:
+        type: integer
+      Name:
+        type: string
+      Surname:
+        type: string
+      DateOfBirth:
+        type: string
+      Age:
+        type: integer
+      IsAdult:
+        type: boolean
+      Interests:
+        type: array
+        items:
+          type: string
